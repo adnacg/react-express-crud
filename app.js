@@ -5,7 +5,6 @@ const path = require('path');
 const jsonfile = require('jsonfile');
 const flash = require('connect-flash');
 const session = require('express-session');
-const reactEngine = require('express-react-views').createEngine();
 
 const helpers = require("./helpers.js");
 // load the router module in the app
@@ -38,18 +37,13 @@ app.use(session({
 }));
 app.use(flash());
 app.use(function (req, res, next) {
-  res.locals.messages = require('express-messages')(req, res)();
+  res.locals.messages = req.flash();
+
   next();
 });
 
-// const hbs = handlebars.create({
-//     defaultLayout: 'main',
-//     partialsDir: [
-//         'views/partials/'
-//     ]
-// });
-
 // set react to be the default view engine
+const reactEngine = require('express-react-views').createEngine();
 app.engine('jsx', reactEngine);
 app.set('views', __dirname + '/views');
 app.set('view engine', 'jsx');

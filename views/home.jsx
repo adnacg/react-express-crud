@@ -1,38 +1,44 @@
 var React = require('react');
 var LayoutContainer = require('./layouts/main.jsx');
 
+class PokemonDetails extends React.Component {
+    render() {
+        return (
+            <div className="pokemonDisplay">
+                <img className="pokeImage" src={this.props.pokemon.img} />
+                <p className="pokeName"><span className="small">#{this.props.pokemon.num}</span><br/><br/>{this.props.pokemon.name}</p>
+                <div className="actionButtonDiv">
+                    <form className="actionForm" method="GET" action={"/pokemon/" + this.props.pokemon.id + "/edit"}>
+                        <input className="actionButtons" type="submit" value="edit" />
+                    </form>
+                    <form className="actionForm" method="POST" action={"/pokemon/" + this.props.pokemon.id }>
+                        <input type="hidden" name="_method" defaultValue="DELETE" />
+                        <input className="actionButtons" type="submit" value="del" />
+                    </form>
+                </div>
+            </div>
+        );
+    }
+}
+
 class Home extends React.Component {
     render() {
-        const pokeinfoComponents = this.props.pokeinfo.map( function(pokemon) {
-            return (
-                    <div className="pokemonDisplay">
-                        <img className="pokeImage" src={pokemon.img} />
-                        <p className="pokeName"><span className="small">#{pokemon.num}</span><br/><br/>{pokemon.name}</p>
-                        <div className="actionButtonDiv">
-                            <form className="actionForm" method="GET" action={"/pokemon/" + pokemon.id + "/edit"}>
-                                <input className="actionButtons" type="submit" value="edit" />
-                            </form>
-                            <form className="actionForm" method="POST" action={"/pokemon/" + pokemon.id }>
-                                <input type="hidden" name="_method" value="DELETE" />
-                                <input className="actionButtons" type="submit" value="del" />
-                            </form>
-                        </div>
-                    </div>
-            );
-        })
+        const pokemonDetailsComponentArray = this.props.pokeinfo.map( function(currentPoke) {
+            return <PokemonDetails pokemon={currentPoke} />;
+        });
 
         return (
-            <LayoutContainer>
+            <LayoutContainer messages={this.props.messages}>
                 <div className="formDiv">
                     <form className="sortform" method="GET" action="/">
-                        <input type="hidden" name="sortby" value="name" />
+                        <input type="hidden" name="sortby" defaultValue="name" />
                         <h1>Welcome To Pokedex!</h1>
                         <div className="buttonDiv">
                             <input className="sortNameButton" type="submit" value="Sort Pokemons By Name" />
                         </div>
                     </form>
                     <form className="sortform" method="GET" action="/">
-                        <input type="hidden" name="sortby" value="id" />
+                        <input type="hidden" name="sortby" defaultValue="id" />
                         <div className="buttonDiv">
                             <input className="sortIdButton" type="submit" value="Sort Pokemons By ID" />
                         </div>
@@ -45,9 +51,8 @@ class Home extends React.Component {
                 </div>
 
                 <div className="pokemonContainer">
-                    {pokeinfoComponents}
+                    {pokemonDetailsComponentArray}
                 </div>
-
             </LayoutContainer>
         );
     }

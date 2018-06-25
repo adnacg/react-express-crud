@@ -1,1 +1,0 @@
-<div className="flashMessage">{messages}</div>

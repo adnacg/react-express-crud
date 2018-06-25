@@ -98,11 +98,10 @@ module.exports = {
             if (pokemonFound) {
                 jsonfile.writeFile(FILE, objRead, function(err) {});
                 request.flash('success', 'Pokemon deleted successfully!');
-                response.redirect('/');
             } else {
                 request.flash('error', 'Pokemon was not found!');
-                response.redirect('/');
             }
+            response.redirect('/');
         })
     }
 }
