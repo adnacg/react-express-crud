@@ -24,7 +24,7 @@ class PokemonDetails extends React.Component {
 class Home extends React.Component {
     render() {
         const pokemonDetailsComponentArray = this.props.pokeinfo.map( function(currentPoke) {
-            return <PokemonDetails pokemon={currentPoke} />;
+            return <PokemonDetails key={currentPoke.id} pokemon={currentPoke} />;
         });
 
         return (
